@@ -1,6 +1,6 @@
 # Cleaning-and-getting-data-Project
 
-In this file we will explain all the steps and script variables in the run_analysis.R script. The *Code Book.Rmd* file will contain an explanation of the experiment and all the folders and files and their variables that are present in the project.
+In this file we will explain all the steps and script variables in the run_analysis.R script. The *Code Book.Rmd* file will contain an explanation of the experiment, all the folders and files, and the variables names of the data sets that are present in the project.
 
 ### Loading the data sets 
 In this part we loaded all the data sets that we will need in the form of a data frame.  
@@ -35,7 +35,7 @@ we add .before=1 so the the activity and subject column are put at the start of 
 
 and we do the same thing with the training data :  
 ```{r setup, include=FALSE} 
-train_data<-mutate(train_data,activity=train_activity[[1]],subject=train_subjects[[1]],.before=1) '''   
+train_data<-mutate(train_data,activity=train_activity[[1]],subject=train_subjects[[1]],.before=1)   
 ```
 **train_data**  now have the same number of rows and  563 columns ("activity" "subject" "V1 "V2"...).   
 and we remove the **test_activity**, **test_subject**, **train_activity**, **train_subject** as we don't need them anymore :   
@@ -97,7 +97,7 @@ We now want to create a data frame, that we will call **averages**, containing a
 We can do this in 3 steps :   
 - **First :** We take the **means_and_standard_devs** data frame and we collapse all the columns containing the means and standards deviations into one column called "variable" and put their values in a column called value, The result is a longer and skinnier data frame with 4 variables : "activity" "subject" "variable" "value", for each activity subject and variable we can see the value of that variable for that subject and activity in the "value"" column.      
 - **then : **  we group the result by the "variable"" column so that each group is in fact one of the columns in **means_and_standard_devs** containing means or standard deviations.    
-3- **finally :** we summarize the result, The summary will be the mean of the "value" column and we will put the results in a new column called average 
+- **finally :** we summarize the result, The summary will be the mean of the "value" column and we will put the results in a new column called average 
 We can do all this (collapse>group_by>summarise) in one chain and store it in a new data frame called **averages**
 ```{r setup, include=FALSE}
 averages<-means_and_standard_devs %>% pivot_longer(cols=3:n,names_to="variable",values_to="value") %>% group_by(activity,subject,variable)%>% dplyr::summarise(average=mean(value))
